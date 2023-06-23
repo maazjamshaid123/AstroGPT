@@ -21,10 +21,7 @@ st.markdown('---')
 st.markdown("---")
 name = st.text_input("Name")
 date = st.date_input("Date", value=None)
-wire_counterparty_options = st.multiselect("Number of Wire Counterparties", options=["Top 10", "Top 20", "10%", "20%"])
 
-
-# Add the checkboxes for selecting the number of counterparties
 st.markdown("---")
 
 uploaded_file = st.file_uploader('Upload a CSV file', type=['csv'])
@@ -49,7 +46,7 @@ if uploaded_file is not None:
     print(text)
 
     if st.button('ANALYZE'):
-        prompt = 'blackholes.txt'
+        prompt = 'BH_format.txt'
         with open(prompt, 'r') as file:
             content = file.read()
 

@@ -38,29 +38,17 @@ if uploaded_file is not None:
     st.write(f"Token: {len(text)}")
 
     if st.button('ANALYZE'):
-        format_file = st.file_uploader('Upload format text file', type=['txt'])
+        messages = [{"role": "system", "content": f"Generate an analysis report based on the provided CSV file.\nName: {name}\nDate: {date}"}]
 
-        if format_file is not None:
-            # Read the format text file
-            with open(format_file.name, 'r') as file:
-                format_text = file.read()
+        def CustomChatGPT(user_input):
+            messages.append({"role": "user", "content": user_input})
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=messages
+            )
+            ChatGPT_reply = response["choices"][0]["message"]["content"]
+            messages.append({"role": "assistant", "content": ChatGPT_reply})
+            return ChatGPT_reply
 
-            # Modify the prompt to include the new text fields
-            prompt_text = f"{format_text}\n\nName: {name}\nDate: {date}"
-
-            messages = [{"role": "system", "content": f"Generate an analysis report based on the provided CSV file. Use the following format: \n{prompt_text}"}]
-
-            def CustomChatGPT(user_input):
-                messages.append({"role": "user", "content": user_input})
-                response = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    messages=messages
-                )
-                ChatGPT_reply = response["choices"][0]["message"]["content"]
-                messages.append({"role": "assistant", "content": ChatGPT_reply})
-                return ChatGPT_reply
-
-            response = CustomChatGPT(text)
-            st.text_area('AstroGPT:', value=response, height=150, max_chars=None, key=None)
-        else:
-            st.warning("Please upload a format text file.")
+        response = CustomChatGPT(text)
+        st.text_area('AstroGPT:', value=response, height=150, max_chars=None, key=None)

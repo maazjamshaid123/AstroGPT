@@ -8,7 +8,7 @@ st.set_page_config(page_title='AstroGPT', layout='wide', menu_items={
     'About': 'by [Maaz Jamshaid](https://www.linkedin.com/in/maazjamshaid/), maaz@astroalgo.com'
 })
 
-key = "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"
+key = ""
 openai.api_key = key
 
 st.markdown('---')
